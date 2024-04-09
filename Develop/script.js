@@ -7,8 +7,7 @@ $(function () {
 
   $(".time-block").each(function(){
     // console.log($(this))
-    var id = $(this).attr("id").split("-")[1]
-    console.log(id)
+    var id = $(this).attr("id").split("-")[1];
     var currenttime = dayjs().hour()
     
     if (id < currenttime){
@@ -18,7 +17,28 @@ $(function () {
     }else{
       $(this).addClass("future").removeClass("past present")
     }
+    
+    var savedData = localStorage.getItem("hour-" + id);
+    if (savedData) {
+      $(this).find("textarea").val(savedData);
+    }
+
   })
+  
+  $(".saveBtn").on("click", function() {
+    var id = $(this).parent().attr("id").split("-")[1];
+    var userInput = $(this).siblings("textarea").val();
+
+    localStorage.setItem("hour-" + id, userInput);
+    $("#safe").text("Your event has been saved!");
+    setTimeout(function(){
+      $("#safe").text("");
+    }, 1000);
+  });
+});
+
+   
+
 
   
   // TODO: Add a listener for click events on the save button. This code should
@@ -39,4 +59,3 @@ $(function () {
   // attribute of each time-block be used to do this?
   //
   // TODO: Add code to display the current date in the header of the page.
-});
